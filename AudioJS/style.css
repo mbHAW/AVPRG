@@ -1,0 +1,42 @@
+.mainDiv{
+    display: grid;
+    height: 100vh;
+    background-color: white;
+    text-align: center;
+}
+
+html, body {
+    background-color: white;
+    height: 100%;
+}
+
+.titleFont {
+    font-size: 70px;
+    font-family: cursive;
+}
+
+.play{
+    background-color: greenyellow;
+    border: 2px solid #4CAF50;
+    border-radius: 1rem;
+    color: black;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 5rem;
+}
+
+.stop{
+    background-color: red;
+    border: 2px solid purple;
+    border-radius: 1rem;
+    color: black;
+    padding: 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    width: 5rem;
+}

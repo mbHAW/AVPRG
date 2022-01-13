@@ -1,2 +1,2 @@
-# AVPRG
-AV-Programmierung
+# AVPRG Lollipop-Musical
+OpenCV-Websockets-Webaudio-Uni-Project

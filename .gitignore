@@ -1,2 +1,14 @@
+# Python #
+##########
 __pycache__/
 *.py[cod]
+
+# Audio #
+#########
+*.wav
+*.mp3
+*.wma
+
+# except these files #
+######################
+!.gitignore

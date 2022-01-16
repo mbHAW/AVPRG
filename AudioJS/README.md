@@ -10,3 +10,5 @@ impulseResponses/
 - church.wav
 - garage.wav
 - room.wav
+
+Statt Dessen liegt auf Github hier jetzt je eine leere Textdatei, einfach damit man weiß, wo die Sounddateien eigentlich sind.

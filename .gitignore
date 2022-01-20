@@ -9,6 +9,10 @@ __pycache__/
 *.mp3
 *.wma
 
+# CSS #
+#######
+.sass-cache/
+
 # except these files #
 ######################
 !.gitignore

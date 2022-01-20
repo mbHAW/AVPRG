@@ -14,7 +14,7 @@ async def show_time(websocket):
         #await websocket.send(datetime.datetime.utcnow().isoformat() + "Z")
         #await asyncio.sleep(random.random() * 2 + 1)
         await websocket.send(json.dumps(video.coords))
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.2)
 
 async def main():    
     loop = asyncio.get_event_loop()

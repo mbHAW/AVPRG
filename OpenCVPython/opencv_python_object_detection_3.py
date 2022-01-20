@@ -119,7 +119,6 @@ def run():
             # Send out Data as JSON
             global coords
             coords = {'xCoord':x, 'yCoord':y, 'size':s}
-            print(coords)
 
         # def getCoords():
         #     for en,keyPoint in enumerate(keypoints):

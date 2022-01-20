@@ -1,6 +1,5 @@
 // let context = new (window.AudioContext || window.webkitAudioContext)();
 let context = new AudioContext();
-// let sound = new Audio("guitar.wav");
 //
 let songLength;
 //
@@ -19,10 +18,9 @@ loopstartControl.setAttribute("disabled", "disabled"); //Having issues when enab
 const loopendControl = document.querySelector(".loopend-control"); //that also means that other functions cant access context unless getData() was already called
 const loopendValue = document.querySelector(".loopend-value");
 loopendControl.setAttribute("disabled", "disabled");
+
 //
-// const songstartControl = document.querySelector('.songstart-control');
-// const songstartValue = document.querySelector('.songstart-value');
-// songstartControl.setAttribute('enabled', 'enabled');
+var jsonCoord
 
 //
 let myAudio = document.querySelector("audio");
@@ -46,6 +44,7 @@ function getOption() {
 // Then put the buffer into the source
 
 function getData() {
+
   source = context.createBufferSource();
   request = new XMLHttpRequest();
 
@@ -66,8 +65,13 @@ function getData() {
 
     // Get new mouse pointer coordinates when mouse is moved
     // then set new gain and frequency values
-    document.onmousemove = updatePage;
-
+    //document.onmousemove = updatePage;
+  
+    
+    updateData = setInterval(() => {
+      updatePage()
+    }, 100);
+    
     //Connect the buffer and nodes
     context.decodeAudioData(
       audioData,
@@ -87,8 +91,6 @@ function getData() {
         loopstartControl.setAttribute("max", Math.floor(songLength));
         loopendControl.setAttribute("max", Math.floor(songLength));
 
-        //Set the length of the songstart slider to match the length of the Audio data
-        //songstartControl.setAttribute('max', Math.floor(songLength))
       },
 
       function (e) {
@@ -97,11 +99,14 @@ function getData() {
     );
 
     function updatePage(e) {
-      corX = window.Event ? e.pageX : clientX + 10000;
-      corY = window.Event ? e.pageY : null; // clientX + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+      //corX = window.Event ? e.pageX : clientX + 10000;
+      //corY = window.Event ? e.pageY : null; // clientX + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
 
-      gainNode.gain.value = newGain(corY);
-      filter.frequency.value = corX;
+      //gainNode.gain.value = newGain(corY);
+      //filter.frequency.value = corX;
+      
+      gainNode.gain.value = newGain(jsonCoord.yCoord);
+      filter.frequency.value = newFrequency(jsonCoord.xCoord);
     }
   };
 
@@ -153,11 +158,6 @@ loopendControl.oninput = function () {
   source.loopEnd = loopendControl.value;
   loopendValue.innerHTML = loopendControl.value;
 };
-
-// songstartControl.oninput = function() {
-//   source.start(songstartControl.value);
-//   songstartValue.innerHTML = songstartControl.value;
-// }
 
 // dump script to pre element
 
@@ -223,3 +223,22 @@ function changeParameter() {
       break;
   }
 }
+
+window.addEventListener("DOMContentLoaded", () => {
+  const xData = document.querySelector("#coordsX")
+  const yData = document.querySelector("#coordsY")
+
+  const websocket = new WebSocket("ws://localhost:5678/");
+
+  websocket.onmessage = ({ data }) => {
+    console.log(data)
+    jsonCoord = JSON.parse(data);
+    xData.innerHTML = jsonCoord.xCoord;
+    yData.innerHTML = jsonCoord.yCoord;
+    
+  };
+
+  setInterval(() => {
+    websocket.send(JSON.stringify({ action: "plus" }));
+  }, 5000);
+});

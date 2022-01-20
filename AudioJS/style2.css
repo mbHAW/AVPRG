@@ -1,0 +1,56 @@
+.mainDiv {
+  display: grid;
+  height: 100em;
+  /* width: 50em; */
+  /* background-color: white; */
+  text-align: center; }
+
+html, body {
+  background-color: white;
+  background-image: url(lollipops.png), url(lollipops.png);
+  background-position-x: 5%, 100%;
+  background-position-y: 10%, 10%;
+  background-repeat: no-repeat;
+  background-size: 40%, 40%; }
+
+.play:hover,
+.play:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em); }
+
+.stop:hover,
+.stop.focus {
+  box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover); }
+
+.stop {
+  --color: #971313;
+  --hover: #ca0000; }
+
+.play {
+  --color: rgb(22, 150, 22);
+  --hover: rgb(0, 190, 0); }
+
+button {
+  color: var(--color);
+  transition: 0.25s; }
+  button:hover, button:focus {
+    border-color: var(--hover);
+    color: rgb(0, 0, 0); }
+
+button {
+  transition: 0.25s;
+  background: none;
+  border: 2px solid;
+  font: inherit;
+  line-height: 1;
+  margin: 0.5em;
+  padding: 1em 2em; }
+
+h1 {
+  font-weight: 400; }
+
+code {
+  color: #e4cb58;
+  font: inherit; }
+
+/*# sourceMappingURL=style2.css.map */

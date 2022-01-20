@@ -14,17 +14,10 @@ html, body {
     background-size: 40%, 40%;
 }
 
-.play{
-    background-color: greenyellow;
-    border: 2px solid #4CAF50;
-    border-radius: 1rem;
-    color: black;
-    padding: 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    width: 5rem;
+.play:hover,
+.play:focus {
+  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
+  transform: translateY(-0.25em);
 }
 
 .stop:hover,
@@ -32,19 +25,30 @@ html, body {
   box-shadow: 
     inset -3.5em 0 0 0 var(--hover),
     inset 3.5em 0 0 0 var(--hover);  
-
-    background-color: red;
-    border: 2px solid purple;
-    border-radius: 1rem;
-    color: black;
-    padding: 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    width: 5rem;
 }
 
+$colors: (
+  stop: #b40808,
+  play: green
+);
+
+@each $button, $color in $colors {
+    .#{$button} {
+      --color: #{$color};
+      --hover: #{adjust-hue($color, 45deg)};
+    }
+}
+
+button {  
+  color: var(--color);
+  transition: 0.25s;
+  
+  &:hover,
+  &:focus { 
+    border-color: var(--hover);
+    color: #fff;
+  }
+}
 
 button {  
     transition: 0.25s;
@@ -54,4 +58,11 @@ button {
     line-height: 1;
     margin: 0.5em;
     padding: 1em 2em;
+}
+
+h1 { font-weight: 400; }
+
+code { 
+  color: #e4cb58;
+  font: inherit;
 }

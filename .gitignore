@@ -11,7 +11,8 @@ __pycache__/
 
 # CSS #
 #######
-.sass-cache/
+.*
+#.sass-cache/
 
 # except these files #
 ######################

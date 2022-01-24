@@ -110,6 +110,12 @@ def run():
         reversemask = 255-mask
         keypoints = detector.detect(reversemask)
 
+        # Detecting multiple Blobs or just the biggest one
+        if keypoints:
+            keypoints.sort(key=(lambda s: s.size))
+            keypoints=keypoints[-1:] # [-1:] Der letzte und damit größte Blob, [-2:] für die zwei größten Blobs
+
+        # Returning Coordinates
         for en,keyPoint in enumerate(keypoints):
             x = keyPoint.pt[0] # x-Position
             y = keyPoint.pt[1] # y-Position

@@ -7,17 +7,21 @@ const pre = document.querySelector("pre");
 const myScript = document.querySelector("script");
 const play = document.querySelector(".play");
 const stop = document.querySelector(".stop");
+
+const btnSong01 = document.querySelector(".song01");
+const btnSong02 = document.querySelector(".song02");
 //
-const playbackControl = document.querySelector(".playback-rate-control");
-const playbackValue = document.querySelector(".playback-rate-value");
-playbackControl.setAttribute("disabled", "disabled");
+const playbackControlNew = document.querySelector(".playback-rate-control-new")
+const playbackValueNew = document.querySelector(".rangeValuePlayback");
+playbackControlNew.setAttribute("disabled", "disabled");
 //
-const loopstartControl = document.querySelector(".loopstart-control");
-const loopstartValue = document.querySelector(".loopstart-value");
-loopstartControl.setAttribute("disabled", "disabled"); //Having issues when enabling, context needs to be called inside the getData() function but
-const loopendControl = document.querySelector(".loopend-control"); //that also means that other functions cant access context unless getData() was already called
-const loopendValue = document.querySelector(".loopend-value");
-loopendControl.setAttribute("disabled", "disabled");
+const loopstartControlNew = document.querySelector(".loopstart-value-new")
+const loopstartValueNew = document.querySelector(".rangeValueLoopStart");
+loopstartControlNew.setAttribute("disabled", "disabled");
+
+const loopendControlNew = document.querySelector(".loopend-value-new")
+const loopendValueNew = document.querySelector(".rangeValueLoopEnd");
+loopendControlNew.setAttribute("disabled", "disabled");
 
 //
 var jsonCoord
@@ -29,15 +33,38 @@ let myAudio = document.querySelector("audio");
 let convolver = context.createConvolver();
 
 // Filter
+const slidersDetune = document.querySelector(".detune-value")
+const slidersDetuneValue = document.querySelector(".rangeValueDetune")
+slidersDetune.setAttribute("disabled", "disabled");
+
+const slidersQuality = document.querySelector(".quality-value")
+const slidersQualityValue = document.querySelector(".rangeValueQuality")
+slidersQuality.setAttribute("disabled", "disabled");
+
 let slidersFilt = document.getElementsByClassName("slider"),
   selectListFilter = document.querySelector("#selectListFilter"),
+  // selectListFilter = document.querySelector("#selectListFilter"),
   filter = context.createBiquadFilter();
 
-function getOption() {
-  console.log(document.querySelector("#songs option:checked").value);
-  var songChoice = document.querySelector("#songs option:checked").value;
-  return songChoice;
+var songChoice = "Song01.mp3";
+function selectSong() {
+  document.querySelector("#song01").addEventListener("click", function (e) {
+    globalThis.songChoice = "Song01.mp3"
+    console.log(songChoice);
+
+  });
+
+  document.querySelector("#song02").addEventListener("click", function (e) {
+    globalThis.songChoice = "guitar.wav"
+    console.log(songChoice);
+
+  });
+
+  return songChoice
 }
+
+  // if (document.querySelector("#song01").clicked == true)
+
 
 // use XHR to load an audio track, and
 // decodeAudioData to decode it and stick it in a buffer.
@@ -48,7 +75,7 @@ function getData() {
   source = context.createBufferSource();
   request = new XMLHttpRequest();
 
-  request.open("GET", getOption(), true);
+  request.open("GET", selectSong(), true);
 
   request.responseType = "arraybuffer";
 
@@ -58,10 +85,10 @@ function getData() {
     //Variables for the Thereminlike actions
     let gainNode = context.createGain();
     let delay = context.createDelay(4.0);
-    var corX;
-    var corY;
-    var windowWidth = window.innerWidth;
-    var windowHeigth = window.innerHeight;
+    // var corX;
+    // var corY;
+    // var windowWidth = window.innerWidth;
+    // var windowHeigth = window.innerHeight;
 
     // Get new mouse pointer coordinates when mouse is moved
     // then set new gain and frequency values
@@ -76,20 +103,22 @@ function getData() {
     context.decodeAudioData(
       audioData,
       function (buffer) {
-        myBuffer = buffer;
+        let myBuffer = buffer;
         songLength = buffer.duration;
         source.buffer = myBuffer;
-        source.playbackRate.value = playbackControl.value;
+        source.playbackRate.value = playbackControlNew.value;
         source.connect(delay);
         delay.connect(convolver);
+        filter.detune.value = slidersDetune.value;
+        filter.Q.value = slidersQuality.value;
         convolver.connect(filter);
         filter.connect(gainNode);
         gainNode.connect(context.destination);
         source.loop = true;
 
         //Set the length of the loop sliders to the length of the Audio data
-        loopstartControl.setAttribute("max", Math.floor(songLength));
-        loopendControl.setAttribute("max", Math.floor(songLength));
+        // loopstartControlNew.setAttribute("max", Math.floor(songLength));
+        // loopendControlNew.setAttribute("max", Math.floor(songLength));
 
       },
 
@@ -114,49 +143,54 @@ function getData() {
 }
 
 // wire up buttons to stop and play audio, and range slider control
-
+loadInpulseResponse("room")
 play.onclick = function () {
   getData();
 
   source.start(0, 36, songLength);  //source.start() not working accordingly, seems to be an issue with Web Audio
 
   play.setAttribute("disabled", "disabled");
-  playbackControl.removeAttribute("disabled");
-  loopstartControl.removeAttribute("disabled");
-  loopendControl.removeAttribute("disabled");
+  playbackControlNew.removeAttribute("disabled");
+  loopstartControlNew.removeAttribute("disabled");
+  loopendControlNew.removeAttribute("disabled");
+  slidersDetune.removeAttribute("disabled");
+  slidersQuality.removeAttribute("disabled");
   //songstartControl.removeAttribute('disabled')
-  loadInpulseResponse("Room");
+  // reverb_Buttons();
 
-  for (var i = 0; i < slidersFilt.length; i++) {
-    slidersFilt[i].removeAttribute("disabled", "disabled");
-  }
+  // for (var i = 0; i < slidersFilt.length; i++) {
+  //   slidersFilt[i].removeAttribute("disabled", "disabled");
+  // }
 };
 
 stop.onclick = function () {
   source.stop(0);
   play.removeAttribute("disabled");
-  playbackControl.setAttribute("disabled", "disabled");
-  loopstartControl.setAttribute("disabled", "disabled");
-  loopendControl.setAttribute("disabled", "disabled");
+  playbackControlNew.setAttribute("disabled", "disabled");
+  loopstartControlNew.setAttribute("disabled", "disabled");
+  loopendControlNew.setAttribute("disabled", "disabled");
+  slidersDetune.setAttribute("disabled", "disabled");
+  slidersQuality.setAttribute("disabled", "disabled");
 
-  for (var i = 0; i < slidersFilt.length; i++) {
-    slidersFilt[i].setAttribute("disabled", "disabled");
-  }
+  // for (var i = 0; i < slidersFilt.length; i++) {
+  //   slidersFilt[i].setAttribute("disabled", "disabled");
+  // }
 };
 
-playbackControl.oninput = function () {
-  source.playbackRate.value = playbackControl.value;
-  playbackValue.innerHTML = playbackControl.value;
+playbackControlNew.oninput = function () {
+  source.playbackRate.value = playbackControlNew.value;
+  // playbackValueNew.innerHTML = playbackControlNew.value;
+
 };
 
-loopstartControl.oninput = function () {
-  source.loopStart = loopstartControl.value;
-  loopstartValue.innerHTML = loopstartControl.value;
+loopstartControlNew.oninput = function () {
+  source.loopStart = loopstartControlNew.value;
+  // loopstartValueNew.innerHTML = loopstartControlNew.value;
 };
 
-loopendControl.oninput = function () {
-  source.loopEnd = loopendControl.value;
-  loopendValue.innerHTML = loopendControl.value;
+loopendControlNew.oninput = function () {
+  source.loopEnd = loopendControlNew.value;
+  // loopendValueNew.innerHTML = loopendControlNew.value;
 };
 
 // dump script to pre element
@@ -176,12 +210,40 @@ var newGain = function (mouseYPosition) {
 };
 
 // Reverb
-document.querySelector("#selectList").addEventListener("change", function (e) {
-  let name = e.target.options[e.target.selectedIndex].value;
-  loadInpulseResponse(name);
-});
+// document.querySelector("#selectList").addEventListener("change", function (e) {
+//   let name = e.target.options[e.target.selectedIndex].value;
+//   loadInpulseResponse(name);
+// });
 
-//Convolver
+// Reverb (Buttons)
+// function reverb_Buttons() {
+    document.querySelector("#cave").addEventListener("click", function (e) {
+      let name = "cave"
+      console.log(name);
+      loadInpulseResponse(name)
+    });
+
+    document.querySelector("#church").addEventListener("click", function (e) {
+      let name = "church"
+      console.log(name);
+      loadInpulseResponse(name)
+    });
+
+    document.querySelector("#garage").addEventListener("click", function (e) {
+      let name = "garage"
+      console.log(name);
+      loadInpulseResponse(name)
+    });
+
+    document.querySelector("#room").addEventListener("click", function (e) {
+      let name = "room"
+      console.log(name);
+      loadInpulseResponse(name)
+    });
+// }
+
+
+//Convolver for Reverb
 function loadInpulseResponse(name) {
   fetch("impulseResponses/" + name + ".wav")
     .then((response) => response.arrayBuffer())
@@ -196,33 +258,49 @@ function loadInpulseResponse(name) {
     .catch(console.error);
 }
 
-// Filter
-for (var i = 0; i < slidersFilt.length; i++) {
-  slidersFilt[i].addEventListener("mousemove", changeParameter, false);
-  slidersFilt[i].setAttribute("disabled", "disabled");
-}
+// selectListFilter.addEventListener("change", function (e) {
+//   filter.type = selectListFilter.options[selectListFilter.selectedIndex].value;
+// });
 
-selectListFilter.addEventListener("change", function (e) {
-  filter.type = selectListFilter.options[selectListFilter.selectedIndex].value;
+document.querySelector("#lowpass").addEventListener("click", function (e) {
+  filter.type = "lowpass"
+  console.log(filter.type)
 });
 
-function changeParameter() {
-  switch (this.id) {
-    // case "frequencySlider":
-    //     //filter.frequency.value = (this.value);
-    //     //filter.frequency.value = (this.value);
-    //     document.querySelector("#frequencyOutput").innerHTML = (this.value) + " Hz";
-    //     break;
-    case "detuneSlider":
-      filter.detune.value = this.value;
-      document.querySelector("#detuneOutput").innerHTML = this.value + " cents";
-      break;
-    case "qSlider":
-      filter.Q.value = this.value;
-      document.querySelector("#qOutput").innerHTML = this.value + " ";
-      break;
-  }
-}
+document.querySelector("#highpass").addEventListener("click", function (e) {
+  filter.type = "highpass"
+  console.log(filter.type)
+});
+
+document.querySelector("#bandpass").addEventListener("click", function (e) {
+  filter.type = "bandpass"
+  console.log(filter.type)
+});
+
+document.querySelector("#allpass").addEventListener("click", function (e) {
+  filter.type = "allpass"
+  console.log(filter.type)
+});
+
+document.querySelector("#lowshelf").addEventListener("click", function (e) {
+  filter.type = "lowshelf"
+  console.log(filter.type)
+});
+
+document.querySelector("#highshelf").addEventListener("click", function (e) {
+  filter.type = "highshelf"
+  console.log(filter.type)
+});
+
+document.querySelector("#peaking").addEventListener("click", function (e) {
+  filter.type = "peaking"
+  console.log(filter.type)
+});
+
+document.querySelector("#notch").addEventListener("click", function (e) {
+  filter.type = "notch"
+  console.log(filter.type)
+});
 
 window.addEventListener("DOMContentLoaded", () => {
   const xData = document.querySelector("#coordsX")

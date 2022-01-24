@@ -1,41 +1,54 @@
 .mainDiv {
   display: grid;
-  height: 100em;
-  /* width: 50em; */
+  height: 50em;
+  width: 100%;
   /* background-color: white; */
-  text-align: center; }
+  text-align: center;
+}
 
 html, body {
   background-color: white;
-  background-image: url(lollipops.png), url(lollipops.png);
-  background-position-x: 5%, 100%;
-  background-position-y: 10%, 10%;
+  background-image: url(lollipops.png), url(note2.png);
+  /* background-position: 0%, 90%; */
+  background-position-x: 0%, 90%;
+  background-position-y: 2em, 2em;
   background-repeat: no-repeat;
-  background-size: 40%, 40%; }
+  background-size: 42%, 35%; 
+}
 
 .play:hover,
 .play:focus {
-  box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
-  transform: translateY(-0.25em); }
+  box-shadow: 
+  0 0.5em 0.5em -0.4em var(--hover);
+  /* inset -3.5em 0 0 0 var(--hover),
+  inset 3.5em 0 0 0 var(--hover); */
+  transform: translateY(-0.25em); 
+}
 
 .stop:hover,
 .stop.focus {
-  box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover); }
+  box-shadow: 
+  inset -3.5em 0 0 0 var(--hover),
+  inset 3.5em 0 0 0 var(--hover); 
+}
 
 .stop {
   --color: #971313;
-  --hover: #ca0000; }
+  --hover: #ff0000; 
+}
 
 .play {
   --color: rgb(22, 150, 22);
-  --hover: rgb(0, 190, 0); }
+  --hover: rgb(22, 209, 22); 
+}
 
 button {
   color: var(--color);
   transition: 0.25s; }
   button:hover, button:focus {
     border-color: var(--hover);
-    color: rgb(0, 0, 0); }
+    color: rgb(0, 0, 0); 
+  }
 
 button {
   transition: 0.25s;
@@ -44,13 +57,7 @@ button {
   font: inherit;
   line-height: 1;
   margin: 0.5em;
-  padding: 1em 2em; }
-
-h1 {
-  font-weight: 400; }
-
-code {
-  color: #e4cb58;
-  font: inherit; }
+  padding: 1em 2em; 
+}
 
 /*# sourceMappingURL=style2.css.map */

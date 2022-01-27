@@ -1,19 +1,16 @@
-// let context = new (window.AudioContext || window.webkitAudioContext)();
+// create Audiocontext
 let context = new AudioContext();
-//
+
+// Declare empty songLength
 let songLength;
-//
-const pre = document.querySelector("pre");
-const myScript = document.querySelector("script");
+
+// Define HTML Buttons and Sliders
 const play = document.querySelector(".play");
 const stop = document.querySelector(".stop");
 
 const btnSong01 = document.querySelector(".song01");
 const btnSong02 = document.querySelector(".song02");
-//
-const playbackControlNew = document.querySelector(".playback-rate-control-new")
-const playbackValueNew = document.querySelector(".rangeValuePlayback");
-playbackControlNew.setAttribute("disabled", "disabled");
+
 //
 const loopstartControlNew = document.querySelector(".loopstart-value-new")
 const loopstartValueNew = document.querySelector(".rangeValueLoopStart");
@@ -23,16 +20,14 @@ const loopendControlNew = document.querySelector(".loopend-value-new")
 const loopendValueNew = document.querySelector(".rangeValueLoopEnd");
 loopendControlNew.setAttribute("disabled", "disabled");
 
-//
+// Declare variable for coordinates from Python
 var jsonCoord
 
-//
-let myAudio = document.querySelector("audio");
+// Filter - HTML Sliders and attributes to disable them when not playing
+const slidersFrequency = document.querySelector(".frequency-value")
+const slidersFrequencyValue = document.querySelector(".rangeValueFrequency")
+slidersFrequency.setAttribute("disabled", "disabled");
 
-// Convolver
-let convolver = context.createConvolver();
-
-// Filter
 const slidersDetune = document.querySelector(".detune-value")
 const slidersDetuneValue = document.querySelector(".rangeValueDetune")
 slidersDetune.setAttribute("disabled", "disabled");
@@ -40,12 +35,9 @@ slidersDetune.setAttribute("disabled", "disabled");
 const slidersQuality = document.querySelector(".quality-value")
 const slidersQualityValue = document.querySelector(".rangeValueQuality")
 slidersQuality.setAttribute("disabled", "disabled");
+let filter = context.createBiquadFilter();
 
-let slidersFilt = document.getElementsByClassName("slider"),
-  selectListFilter = document.querySelector("#selectListFilter"),
-  // selectListFilter = document.querySelector("#selectListFilter"),
-  filter = context.createBiquadFilter();
-
+// Logic for choosing a song
 var songChoice = "Song01.mp3";
 function selectSong() {
   document.querySelector("#song01").addEventListener("click", function (e) {
@@ -57,21 +49,12 @@ function selectSong() {
   document.querySelector("#song02").addEventListener("click", function (e) {
     globalThis.songChoice = "guitar.wav"
     console.log(songChoice);
-
   });
-
   return songChoice
 }
 
-  // if (document.querySelector("#song01").clicked == true)
-
-
-// use XHR to load an audio track, and
-// decodeAudioData to decode it and stick it in a buffer.
-// Then put the buffer into the source
-
+// Logic for transfering data
 function getData() {
-
   source = context.createBufferSource();
   request = new XMLHttpRequest();
 
@@ -84,21 +67,10 @@ function getData() {
 
     //Variables for the Thereminlike actions
     let gainNode = context.createGain();
-    let delay = context.createDelay(4.0);
-    // var corX;
-    // var corY;
-    // var windowWidth = window.innerWidth;
-    // var windowHeigth = window.innerHeight;
-
-    // Get new mouse pointer coordinates when mouse is moved
-    // then set new gain and frequency values
-    //document.onmousemove = updatePage;
-  
     
     updateData = setInterval(() => {
       updatePage()
     }, 100);
-    
     //Connect the buffer and nodes
     context.decodeAudioData(
       audioData,
@@ -106,20 +78,17 @@ function getData() {
         let myBuffer = buffer;
         songLength = buffer.duration;
         source.buffer = myBuffer;
-        source.playbackRate.value = playbackControlNew.value;
-        source.connect(delay);
-        delay.connect(convolver);
+        source.connect(filter);
+        filter.frequency.value = slidersFrequency.value;
         filter.detune.value = slidersDetune.value;
         filter.Q.value = slidersQuality.value;
-        convolver.connect(filter);
         filter.connect(gainNode);
         gainNode.connect(context.destination);
         source.loop = true;
 
-        //Set the length of the loop sliders to the length of the Audio data
-        // loopstartControlNew.setAttribute("max", Math.floor(songLength));
-        // loopendControlNew.setAttribute("max", Math.floor(songLength));
-
+        // Set the length of the loop sliders to the length of the Audio data
+        loopstartControlNew.setAttribute("max", Math.floor(songLength));
+        loopendControlNew.setAttribute("max", Math.floor(songLength));
       },
 
       function (e) {
@@ -127,15 +96,12 @@ function getData() {
       }
     );
 
+    // Function for the lollipop movement controls
     function updatePage(e) {
-      //corX = window.Event ? e.pageX : clientX + 10000;
-      //corY = window.Event ? e.pageY : null; // clientX + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
-
-      //gainNode.gain.value = newGain(corY);
-      //filter.frequency.value = corX;
-      
       gainNode.gain.value = newGain(jsonCoord.yCoord);
-      filter.frequency.value = newFrequency(jsonCoord.xCoord);
+      source.playbackRate.value = newPlaybackRate(jsonCoord.xCoord);
+      document.getElementById('rangeValueGain').innerHTML = ((Math.round(gainNode.gain.value*10000) / 100).toFixed(2)) + " %";
+      document.getElementById('rangeValuePlayback').innerHTML = "x "+ (Math.round(source.playbackRate.value * 100) / 100).toFixed(2);
     }
   };
 
@@ -143,125 +109,63 @@ function getData() {
 }
 
 // wire up buttons to stop and play audio, and range slider control
-loadInpulseResponse("room")
+// loadInpulseResponse("room")
 play.onclick = function () {
   getData();
-
-  source.start(0, 36, songLength);  //source.start() not working accordingly, seems to be an issue with Web Audio
-
+  source.start(0, 36, songLength);
   play.setAttribute("disabled", "disabled");
-  playbackControlNew.removeAttribute("disabled");
   loopstartControlNew.removeAttribute("disabled");
   loopendControlNew.removeAttribute("disabled");
+  slidersFrequency.removeAttribute("disabled");
   slidersDetune.removeAttribute("disabled");
   slidersQuality.removeAttribute("disabled");
-  //songstartControl.removeAttribute('disabled')
-  // reverb_Buttons();
-
-  // for (var i = 0; i < slidersFilt.length; i++) {
-  //   slidersFilt[i].removeAttribute("disabled", "disabled");
-  // }
 };
 
 stop.onclick = function () {
   source.stop(0);
   play.removeAttribute("disabled");
-  playbackControlNew.setAttribute("disabled", "disabled");
   loopstartControlNew.setAttribute("disabled", "disabled");
   loopendControlNew.setAttribute("disabled", "disabled");
+  slidersFrequency.setAttribute("disabled", "disabled");
   slidersDetune.setAttribute("disabled", "disabled");
   slidersQuality.setAttribute("disabled", "disabled");
-
-  // for (var i = 0; i < slidersFilt.length; i++) {
-  //   slidersFilt[i].setAttribute("disabled", "disabled");
-  // }
 };
 
-playbackControlNew.oninput = function () {
-  source.playbackRate.value = playbackControlNew.value;
-  // playbackValueNew.innerHTML = playbackControlNew.value;
-
-};
-
+// Set new values for various variables
 loopstartControlNew.oninput = function () {
   source.loopStart = loopstartControlNew.value;
-  // loopstartValueNew.innerHTML = loopstartControlNew.value;
 };
 
 loopendControlNew.oninput = function () {
   source.loopEnd = loopendControlNew.value;
-  // loopendValueNew.innerHTML = loopendControlNew.value;
 };
 
-// dump script to pre element
-
-//   pre.innerHTML = myScript.innerHTML;
-
-var newFrequency = function (mouseXPosition) {
-  var minFrequency = 20;
-  var maxFrequency = 2000;
-  return (mouseXPosition / window.innerWidth) * maxFrequency + minFrequency;
+slidersFrequency.oninput = function () {
+  filter.frequency.value = slidersFrequency.value;
 };
 
+slidersDetune.oninput = function () {
+  filter.detune.value = slidersDetune.value;
+};
+
+slidersQuality.oninput = function () {
+  filter.Q.value = slidersQuality.value;
+};
+
+// Function for logic to control gain with lollipop
 var newGain = function (mouseYPosition) {
   var minGain = 0;
   var maxGain = 1;
-  return 1 - (mouseYPosition / window.innerHeight) * maxGain + minGain;
+  return 1 - (mouseYPosition / 720) * maxGain + minGain;
 };
 
-// Reverb
-// document.querySelector("#selectList").addEventListener("change", function (e) {
-//   let name = e.target.options[e.target.selectedIndex].value;
-//   loadInpulseResponse(name);
-// });
+var newPlaybackRate = function (mouseXPosition) {
+  var minPlayback = 0.25;
+  var maxPlayback = 3;
+  return (mouseXPosition / 1280) * maxPlayback + minPlayback
+};
 
-// Reverb (Buttons)
-// function reverb_Buttons() {
-    document.querySelector("#cave").addEventListener("click", function (e) {
-      let name = "cave"
-      console.log(name);
-      loadInpulseResponse(name)
-    });
-
-    document.querySelector("#church").addEventListener("click", function (e) {
-      let name = "church"
-      console.log(name);
-      loadInpulseResponse(name)
-    });
-
-    document.querySelector("#garage").addEventListener("click", function (e) {
-      let name = "garage"
-      console.log(name);
-      loadInpulseResponse(name)
-    });
-
-    document.querySelector("#room").addEventListener("click", function (e) {
-      let name = "room"
-      console.log(name);
-      loadInpulseResponse(name)
-    });
-// }
-
-
-//Convolver for Reverb
-function loadInpulseResponse(name) {
-  fetch("impulseResponses/" + name + ".wav")
-    .then((response) => response.arrayBuffer())
-    .then((undecodedAudio) => context.decodeAudioData(undecodedAudio))
-    .then((audioBuffer) => {
-      // if (convolver) {convolver.disconnect();}
-
-      convolver = context.createConvolver();
-      convolver.buffer = audioBuffer;
-      convolver.normalize = true;
-    })
-    .catch(console.error);
-}
-
-// selectListFilter.addEventListener("change", function (e) {
-//   filter.type = selectListFilter.options[selectListFilter.selectedIndex].value;
-// });
-
+// Filter buttons functions
 document.querySelector("#lowpass").addEventListener("click", function (e) {
   filter.type = "lowpass"
   console.log(filter.type)
@@ -302,6 +206,7 @@ document.querySelector("#notch").addEventListener("click", function (e) {
   console.log(filter.type)
 });
 
+// Get coordinates from websocket
 window.addEventListener("DOMContentLoaded", () => {
   const xData = document.querySelector("#coordsX")
   const yData = document.querySelector("#coordsY")
@@ -311,9 +216,8 @@ window.addEventListener("DOMContentLoaded", () => {
   websocket.onmessage = ({ data }) => {
     console.log(data)
     jsonCoord = JSON.parse(data);
-    xData.innerHTML = jsonCoord.xCoord;
-    yData.innerHTML = jsonCoord.yCoord;
-    
+    xData.innerHTML = (Math.round(jsonCoord.xCoord*100) / 100).toFixed(2) + " out of 1280";
+    yData.innerHTML = (((Math.round(jsonCoord.yCoord*100) / 100) * -1 + 720).toFixed(2))  + " out of 720"; 
   };
 
   setInterval(() => {

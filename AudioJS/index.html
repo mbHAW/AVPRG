@@ -5,20 +5,15 @@
         <title>AVPRG Audio</title>
     </head>
     <div class="mainDiv">
-        <body>
-            
+        <body> 
             <div>
+                <!-- Define play and stop buttons -->
                 <button class="play">Play</button>
                 <button class="stop">Stop</button>
+                <br>
+                <br>
 
-              <!-- <div class="custom-select" style ="width:100%;">
-                <label for="Songs">Choose a song:</label>
-                <select name="Songs" id="songs">
-                <option value="Song01.mp3">01</option>
-                <option value="guitar.wav">02</option>
-                </select>
-              </div> -->
-
+                <!-- Define song dropdown -->
                 <div class="dropdown">
                     <input type="checkbox" id="dropdown">
                     
@@ -41,95 +36,61 @@
                       <feBlend in="SourceGraphic" in2="goo" />
                     </filter>
                   </svg>
+                  <!--   -->
 
+                  <!-- Define song indicator with JS change integration -->
                   <h3 id="songIndicator"> Current song: 1</h3>
                   <script type="text/javascript">
                     function song_indicator(value) {
                       document.getElementById('songIndicator').innerHTML = "Current song: " + value;
                     }
                   </script>
-
-                <h3>Set playback rate</h3>
+                <br>
+                <!-- Indicators for playback speed and gain -->
+                <h2>Playback rate</h2>
                 <span id="rangeValuePlayback">x1</span>
-                <input class="playback-rate-control-new" type="range" min="0.25" max="3" step="0.05" value="1" onChange="rangeSlide(this.value)" onmousemove="rangeSlidePlayback(this.value)"></Input>
-                
-                <script type="text/javascript">
-                  function rangeSlidePlayback(value) {
-                    document.getElementById('rangeValuePlayback').innerHTML = "x"+value;
-                  }
-                </script>
-            
-                <h3>Loop start</h3>
-                <span id="rangeValueLoopStart">0</span>
-                <input class="loopstart-value-new" type="range" min="0" max="20" step="1" value="0" onChange="rangeSlide(this.value)" onmousemove="rangeSlideLoopStart(this.value)"></Input>
+
+                <h2>Gain rate</h2>
+                <span id="rangeValueGain">100 %</span>
+
+                <br>
+                <!-- Slider for loop start with JS change integration -->
+                <h2>Loop start</h2>
+                <span id="rangeValueLoopStart">0s</span>
+                <input class="loopstart-value-new" type="range" min="0" max="20" step="1" value="0" onChange="rangeSlideLoopStart(this.value)" onmousemove="rangeSlideLoopStart(this.value)"></Input>
                 
                 <script type="text/javascript">
                   function rangeSlideLoopStart(value) {
-                    document.getElementById('rangeValueLoopStart').innerHTML = value;
+                    document.getElementById('rangeValueLoopStart').innerHTML = value + "s";
                   }
                 </script>
 
-                <br>
-                <h3>Loop end</h3>
-                <span id="rangeValueLoopEnd">0</span>
-                <input class="loopend-value-new" type="range" min="0" max="20" step="1" value="0" onChange="rangeSlide(this.value)" onmousemove="rangeSlideLoopEnd(this.value)"></Input>
+                <!-- Slider for loop end with JS change integration -->
+                <h2>Loop end</h2>
+                <span id="rangeValueLoopEnd">0s</span>
+                <input class="loopend-value-new" type="range" min="0" max="20" step="1" value="0" onChange="rangeSlideLoopEnd(this.value)" onmousemove="rangeSlideLoopEnd(this.value)"></Input>
                 
                 <script type="text/javascript">
                   function rangeSlideLoopEnd(value) {
-                    document.getElementById('rangeValueLoopEnd').innerHTML = value;
+                    document.getElementById('rangeValueLoopEnd').innerHTML = value + "s";
                   }
                 </script>
 
                 <br>
                 <br>
-                <!-- <h2 id="Text">Reverb</h2>              -->
-                <!-- <div> 
-                    <select id="selectList">
-                    <option value="cave">Cave</option>
-                    <option value="church">Church</option>
-                    <option value="garage">Garage</option>
-                    <option value="room">Room</option>
-                    </select>
-                </div> -->
-
-                <div class="dropdown2">
-                    <input type="checkbox" id="dropdown2">
-                  
-                    <label class="dropdown__face2" for="dropdown2">
-                      <div class="dropdown__text2">Reverb</div>
-                  
-                      <div class="dropdown__arrow2"></div>
-                    </label>
-                  
-                    <ul class="dropdown__items2">
-                        <button id="cave" onmousemove="reverb_indicator(value = 'cave')">Cave</button>
-                        <button id="church" onmousemove="reverb_indicator(value = 'church')">Church</button>
-                        <button id="garage" onmousemove="reverb_indicator(value = 'garage')">Garage</button>
-                        <button id="room" onmousemove="reverb_indicator(value = 'room')">Room</button>
-                    </ul>
-                  </div>
-                  <h3 id="reverbIndicator"> Current reverb: room</h3>
-                  <script type="text/javascript">
-                    function reverb_indicator(value) {
-                      document.getElementById('reverbIndicator').innerHTML = "Current reverb: " + value;
-                    }
-                  </script>
-
-                  <svg>
-                    <filter id="goo">
-                      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                      <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7" result="goo" />
-                      <feBlend in="SourceGraphic" in2="goo" />
-                    </filter>
-                  </svg>
-
                 <h2 id="Text">Filter</h2>
-        
-                <!-- <div id="detuneContainer"> Detune
-                    <input type="range" min="0" max="100" value="25" class="slider" id="detuneSlider">
-                    <span id="detuneOutput">0 cents</span>
-                </div> -->
 
+                <!-- Define Frequency with JS change integration -->
+                <span id="rangeValueFrequency">Frequency: 1600 Hz</span>
+                <input class="frequency-value" type="range" min="20" max="2000" value="1600" onChange="rangeSlideFrequency(this.value)" onmousemove="rangeSlideFrequency(this.value)"></Input>
+                
+                <script type="text/javascript">
+                  function rangeSlideFrequency(value) {
+                    document.getElementById('rangeValueFrequency').innerHTML = "Frequency: " + value + " Hz";
+                  }
+                </script>
+
+                <!-- Define detune with JS change integration -->
                 <span id="rangeValueDetune">Detune: 0 cents</span>
                 <input class="detune-value" type="range" min="0" max="100" value="0" onChange="rangeSlideDetune(this.value)" onmousemove="rangeSlideDetune(this.value)"></Input>
                 
@@ -139,13 +100,7 @@
                   }
                 </script>
 
-
-                <!-- <div id="qContainer"> Quality
-                    <input type="range" min="0" max="100" value="20" class="slider" id="qSlider">
-                    <span id="qOutput">0</span>
-                </div> -->
-
-
+                <!-- Define quality with JS change integration -->
                 <span id="rangeValueQuality">Quality: 0</span>
                 <input class="quality-value" type="range" min="0" max="100" value="0" onChange="rangeSlideQuality(this.value)" onmousemove="rangeSlideQuality(this.value)"></Input>
                 
@@ -155,22 +110,10 @@
                   }
                 </script>
 
-
-                <!-- <div id="typeContainer"> Type
-                    <select id="selectListFilter">
-                        <option value="lowpass">Lowpass</option>
-                        <option value="highpass">Highpass</option>
-                        <option value="bandpass">Bandpass</option>
-                        <option value="allpass">Allpass</option>
-                        <option value="lowshelf">Lowshelf</option>
-                        <option value="highshelf">Highshelf</option>
-                        <option value="peaking">Peaking</option>
-                        <option value="notch">Notch</option>
-                    </select>
-                </div> -->
-
                 <br>
                 <br>
+
+                <!-- Define dropdown for filter -->
                 <div class="dropdown3">
                   <input type="checkbox" id="dropdown3">
                 
@@ -206,13 +149,10 @@
                       document.getElementById('filterIndicator').innerHTML = "Current filter: " + value;
                     }
                   </script>
-            
-                <pre></pre>
-                <br>
-                <br>
+                <!--  -->
             </div>
 
-            <script type ='text/javascript' src='coordinates.js'></script>
+            <!-- Show coordniates sent by websocket from python -->
             <div>x: </div>
             <div id="coordsX"> a</div>
             <div>y: </div>
@@ -220,7 +160,6 @@
   
             <script src="audio.js"></script>
             
-            <!--------------------------------------->
         </body>
     </div>
 </html>

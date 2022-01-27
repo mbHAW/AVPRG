@@ -21,14 +21,7 @@ html {
   background-size: 30%, 25%;
 }
 
-/* body{
-  background-image: url(noten.png);
-  background-position-x: 0%;
-  background-position-y: -1em;
-  background-repeat: no-repeat;
-  background-size: 100%;
-} */
-
+/* Style play and stop button */
 .play:hover,
 .play:focus {
   box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
@@ -39,13 +32,16 @@ html {
   box-shadow: inset -3.5em 0 0 0 var(--hover), inset 3.5em 0 0 0 var(--hover); }
 
 .stop {
-  --color: #971313;
-  --hover: #ff0000; }
+  --color: #c51919;
+  --hover: #c51919; 
+}
 
 .play {
   --color: #169616;
-  --hover: #16d116; }
+  --hover: #16d116; 
+}
 
+/* Resize buttons in dropdowns */
 #song01,
 #song02,
 #cave,
@@ -64,6 +60,7 @@ html {
   padding: 0;
 }
 
+/* Color when hovering white */
 #song01:hover, #song01:focus,
 #song02:hover, #song02:focus,
 #cave:hover, #cave:focus,
@@ -81,6 +78,7 @@ html {
   color:rgb(255, 255, 255)
 }
 
+/* Button styling */
 button {
   color: var(--color);
   transition: 0.25s; }
@@ -98,12 +96,13 @@ button {
   padding: 1em 2em; 
 }
 
+/* Blob dropdown */
 .dropdown {
   position: relative;
   width: 20em;
   filter: url(#goo); }
   .dropdown__face, .dropdown__items {
-    background-color: #971313;
+    background-color: #c51919;
     padding: 20px;
     border-radius: 25px; }
   .dropdown__face {
@@ -125,7 +124,7 @@ button {
     transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); }
     .dropdown__items::before {
       content: "";
-      background-color: #971313;
+      background-color: #c51919;
       position: absolute;
       bottom: 100%;
       right: 20%;
@@ -153,7 +152,7 @@ button {
   width: 20em;
   filter: url(#goo); }
   .dropdown__face2, .dropdown__items2 {
-    background-color: #971313;
+    background-color: #c51919;
     padding: 20px;
     border-radius: 25px; }
   .dropdown__face2 {
@@ -175,7 +174,7 @@ button {
     transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); }
     .dropdown__items2::before {
       content: "";
-      background-color: #971313;
+      background-color: #c51919;
       position: absolute;
       bottom: 100%;
       right: 20%;
@@ -203,7 +202,7 @@ button {
   width: 20em;
   filter: url(#goo); }
   .dropdown__face3, .dropdown__items3 {
-    background-color: #971313;
+    background-color: #c51919;
     padding: 20px;
     border-radius: 25px; }
   .dropdown__face3 {
@@ -225,7 +224,7 @@ button {
     transition: all 0.4s cubic-bezier(0.93, 0.88, 0.1, 0.8); }
     .dropdown__items3::before {
       content: "";
-      background-color: #971313;
+      background-color: #c51919;
       position: absolute;
       bottom: 100%;
       right: 20%;
@@ -251,21 +250,29 @@ button {
 svg {
   display: none; }
 
+/* Sliders styling */
 #rangeValuePlayback,
+#rangeValueGain,
 #rangeValueLoopStart,
 #rangeValueLoopEnd,
+#rangeValueFrequency,
 #rangeValueDetune,
-#rangeValueQuality {
+#rangeValueQuality,
+#coordsX,
+#coordsY {
   position: relative;
   display: block;
   text-align: center;
   font-size: 1.5em;
-  color: #971313;
+  color: #c51919;
   font-weight: 400;
+
+/* Value indicators styling */
 }
 .playback-rate-control-new,
 .loopstart-value-new,
 .loopend-value-new,
+.frequency-value,
 .detune-value,
 .quality-value {
   width: 200px;
@@ -278,10 +285,11 @@ svg {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 1);
 }
 
-
+/* Sliders styling */
 .playback-rate-control-new::-webkit-slider-thumb,
 .loopstart-value-new::-webkit-slider-thumb,
 .loopend-value-new::-webkit-slider-thumb,
+.frequency-value::-webkit-slider-thumb,
 .detune-value::-webkit-slider-thumb,
 .quality-value::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -291,9 +299,10 @@ svg {
   background: #ffffff;
   cursor: pointer;
   border: 4px solid #181818;
-  box-shadow: -407px 0 0 400px #971313;
+  box-shadow: -407px 0 0 400px #c51919;
 }
 
+/* Color, when sliders disabled */
 input:disabled {
   background:rgb(187, 187, 187)
 }

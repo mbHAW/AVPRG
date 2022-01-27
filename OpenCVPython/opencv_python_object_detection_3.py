@@ -2,9 +2,6 @@ from asyncio.tasks import sleep
 from asyncio.windows_events import NULL
 import cv2
 import numpy as np
-import simplejson as json
-import sys
-
 
 def nothing(x):
     pass
@@ -48,10 +45,6 @@ def run():
         if blur > 0:
             frame = cv2.blur(frame, (blur, blur))
 
-        # frame = cv2.GaussianBlur(frame, (7, 7), 1)
-        # kSize = 5
-        # frame = cv2.medianBlur(frame, kSize)
-
         #---------------------------------
 
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -70,12 +63,6 @@ def run():
         mask = cv2.inRange(hsv, l_b, u_b)
         mask = cv2.dilate(mask, None, iterations=2)
         mask = cv2.erode(mask, None, iterations=2)
-
-        # # Cut the image using the search mask:
-        # # window where to search as [x_min, y_min, x_max, y_max] adimensional (0.0 to 1.0) starting from top left corner
-        # mask = apply_search_window(mask, search_window)
-
-        # res = cv2.bitwise_and(frame, frame, mask=mask)
 
         #---------------------------------
 
@@ -110,6 +97,11 @@ def run():
         reversemask = 255-mask
         keypoints = detector.detect(reversemask)
 
+
+        # Reverse the mask: blobs are black on white
+        reversemask = 255-mask
+        keypoints = detector.detect(reversemask)
+
         # Detecting multiple Blobs or just the biggest one
         if keypoints:
             keypoints.sort(key=(lambda s: s.size))
@@ -121,23 +113,10 @@ def run():
             y = keyPoint.pt[1] # y-Position
             s = keyPoint.size  # Durchmesser
             a = []
-
+            
             # Send out Data as JSON
             global coords
             coords = {'xCoord':x, 'yCoord':y, 'size':s}
-
-        # def getCoords():
-        #     for en,keyPoint in enumerate(keypoints):
-        #         x = keyPoint.pt[0] # x-Position
-        #         y = keyPoint.pt[1] # y-Position
-        #         s = keyPoint.size  # Durchmesser
-        #         a = []
-
-        #         # Send out Data as JSON
-        #         coords = {'xCoord':x, 'yCoord':y, 'size':s}
-
-        #         yield coords
-           
 
         #-- Draw detected blobs as red circles.
         #-- cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS ensures the size of the circle corresponds to the size of blob
@@ -150,30 +129,11 @@ def run():
         cv2.imshow("frame_orig", frame_orig)
         cv2.imshow("frame", frame)
         cv2.imshow("mask", mask)
-        # cv2.imshow("res", res)
-
-        # hStack = np.column_stack((mask, mask))
-        # hStack = np.c_[mask, mask]
-        # hStack = np.hstack([mask,mask]) # vstack or hstack, vertical or horizontal
-        # cv2.imshow('Horizontal Stacking', hStack)
-
-        #---------------------------------
-
-        # if cv2.waitKey(1) & 0xFF == 32:
-        #     # print(getCoords())
-        #     # print(coords)
-        #     myCoords = getCoords()
-        #     for i in myCoords:
-        #         jsonCoord = json.dumps(i)
-        #         print("var jsonstr = '{}' ".format(jsonCoord))
-            
 
         # Press esc to exit
         if cv2.waitKey(1) & 0xFF == 27:
             isRunning = False
             break
-
-        
 
     cap.release()
     cv2.destroyAllWindows()

@@ -97,11 +97,6 @@ def run():
         reversemask = 255-mask
         keypoints = detector.detect(reversemask)
 
-
-        # Reverse the mask: blobs are black on white
-        reversemask = 255-mask
-        keypoints = detector.detect(reversemask)
-
         # Detecting multiple Blobs or just the biggest one
         if keypoints:
             keypoints.sort(key=(lambda s: s.size))

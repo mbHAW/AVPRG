@@ -68,27 +68,27 @@ def run():
 
         # Set up the SimpleBlobdetector with default parameters.
         params = cv2.SimpleBlobDetector_Params()
-            
+
+        # Filter by Area.
+        params.filterByArea = True
+        params.minArea = 3.14159 * 25 * 25 # Min 50 Pixel Durchmesser
+        params.maxArea = 3.14159 * 125 * 125 # Max 2500 Pixel Durchmesser
+
         # Change thresholds
         params.minThreshold = 0
         params.maxThreshold = 100
-            
-        # Filter by Area.
-        params.filterByArea = True
-        params.minArea = 2000
-        params.maxArea = 50000
-            
+
         # Filter by Circularity
         params.filterByCircularity = True
         params.minCircularity = 0.1
-            
-        # Filter by Convexity
-        params.filterByConvexity = True
-        params.minConvexity = 0.5
-            
+
         # Filter by Inertia
         params.filterByInertia = True
         params.minInertiaRatio = 0.5
+
+        # Filter by Convexity
+        params.filterByConvexity = True
+        params.minConvexity = 0.5
 
         # Apply blob detection
         detector = cv2.SimpleBlobDetector_create(params)

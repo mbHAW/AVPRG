@@ -1,2 +1,2 @@
-# AVPRG Lollipop-Musical - Develop Branch
+# AVPRG Lollipop-Musical
 OpenCV-Websockets-Webaudio-Uni-Project

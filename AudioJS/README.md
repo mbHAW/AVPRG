@@ -1,5 +1,6 @@
 # AudioJS
 MP3- oder WAV-Files, sowie Logfiles oder Temporäre Files werden für gewöhnlich nicht auf GitHub hochgeladen.  
+Statt Dessen liegt auf Github hier jetzt je eine leere Textdatei. Einfach damit man weiß, wo die Sounddateien eigentlich sind.  
 In diesem Fall wäre das hier:  
 - guitar.wav
 - Song01.mp3
@@ -10,8 +11,6 @@ impulseResponses/
 - church.wav
 - garage.wav
 - room.wav
-
-Statt Dessen liegt auf Github hier jetzt je eine leere Textdatei. Einfach damit man weiß, wo die Sounddateien eigentlich sind.  
 
 Verwendetes Fremdmaterial:
 - Bild Lollis von Chuck Herrera  

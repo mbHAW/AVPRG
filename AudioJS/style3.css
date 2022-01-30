@@ -22,6 +22,7 @@ html {
 }
 
 /* Style play and stop button */
+/* Design of Play and Stop buttons by: giana (codepen.io, https://codepen.io/giana/pen/BZaGyP) */
 .play:hover,
 .play:focus {
   box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
@@ -79,6 +80,7 @@ html {
 }
 
 /* Button styling */
+/* Design of Play and Stop buttons by: giana (codepen.io, https://codepen.io/giana/pen/BZaGyP) */
 button {
   color: var(--color);
   transition: 0.25s; }
@@ -97,6 +99,7 @@ button {
 }
 
 /* Blob dropdown */
+/* Design of dropdown made by: Mark "Markshall" Eriksson (codepen.io, https://codepen.io/Markshall/pen/PoZJRve) */
 .dropdown {
   position: relative;
   width: 20em;
@@ -251,6 +254,7 @@ svg {
   display: none; }
 
 /* Sliders styling */
+/* Design of sliders made by shashank "shashank_coder" sharma (codepen.io, https://codepen.io/shashank_coder/pen/jOqxOpK) */
 #rangeValuePlayback,
 #rangeValueGain,
 #rangeValueLoopStart,

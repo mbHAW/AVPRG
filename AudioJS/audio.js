@@ -53,7 +53,7 @@ function selectSong() {
   return songChoice
 }
 
-// Logic for transfering data
+// Logic for transfering audio data
 function getData() {
   source = context.createBufferSource();
   request = new XMLHttpRequest();

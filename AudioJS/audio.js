@@ -109,7 +109,6 @@ function getData() {
 }
 
 // wire up buttons to stop and play audio, and range slider control
-// loadInpulseResponse("room")
 play.onclick = function () {
   getData();
   source.start(0, 36, songLength);
